@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sideproject.boardserver.mapper.UserProfileMapper">
+    <select id="getUserProfile" resultType="com.sideproject.boardserver.dto.UserDTO">
+        SELECT user_id,
+               password,
+               nick_name,
+               create_time,
+               is_with_draw,
+               status
+        FROM user
+        Where user_id = #{id}
+    </select>
+    <insert id="insertUserProfile">
+        INSERT INTO user(user_id, password, nick_name, is_with_draw, status, is_admin)
+        VALUES (#{userId}, #{password}, #{nickName}, #{isWithDraw}, #{status}, #{isAdmin})
+    </insert>
+    <update id="updateUserProfile" parameterType="com.sideproject.boardserver.dto.UserDTO">
+        UPDATE user
+        SET password  = #{password},
+            nickName=#{nickName},
+            isWithDraw=#{isWithDraw},
+            status=#{status}
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteUserProfile">
+        DELETE
+        FROM user
+        where userId = #{id}
+    </delete>
+    <select id="findByIdAndPassword" resultType="com.sideproject.boardserver.dto.UserDTO">
+        SELECT id,
+               user_id,
+               password,
+               nick_name,
+               create_time,
+               is_with_draw,
+               status
+        FROM user
+        WHERE user_id = #{id}
+          AND password = #{cryptoPassword}
+          AND status != 'DELETE'
+    </select>
+    <select id="idCheck" resultType="int">
+        SELECT COUNT(id)
+        FROM user
+        WHERE user_id = #{id}
+    </select>
+    <update id="updatePassword" parameterType="com.sideproject.boardserver.dto.UserDTO">
+        UPDATE user
+        SET password = #{password}
+        WHERE user_id = #{userID}
+    </update>
+    <insert id="register">
+        INSERT INTO user (user_id, password, nick_name, create_time, is_with_draw, status)
+        VALUES (#{userID}, #{password}, #{nickName}, #{createTime}, #{isWithDraw}, #{status})
+    </insert>
+</mapper>
