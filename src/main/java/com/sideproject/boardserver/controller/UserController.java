@@ -1,5 +1,6 @@
 package com.sideproject.boardserver.controller;
 
+import com.sideproject.boardserver.aop.LoginCheck;
 import com.sideproject.boardserver.dto.UserDTO;
 import com.sideproject.boardserver.dto.request.UserDeleteId;
 import com.sideproject.boardserver.dto.request.UserLoginRequest;
@@ -69,14 +70,14 @@ public class UserController {
     }
 
     @PatchMapping("password")
-    public ResponseEntity<LoginResponse> updateUserPassword(@RequestBody UserUpdatePasswordRequest userUpdatePasswordRequest, HttpSession session) {
+    @LoginCheck(type = LoginCheck.UserType.USER)
+    public ResponseEntity<LoginResponse> updateUserPassword(String accountId, @RequestBody UserUpdatePasswordRequest userUpdatePasswordRequest, HttpSession session) {
         ResponseEntity<LoginResponse> responseEntity = null;
-        String id = SessionUtil.getLoginMemberId(session);
         String beforePassword = userUpdatePasswordRequest.getBeforePassword();
         String afterPassword = userUpdatePasswordRequest.getAfterPassword();
 
         try {
-            userService.updatePassword(id, beforePassword, afterPassword);
+            userService.updatePassword(accountId, beforePassword, afterPassword);
             ResponseEntity.ok(new ResponseEntity<LoginResponse>(loginResponse, HttpStatus.OK));
         } catch (IllegalArgumentException e) {
             log.error("updatePassword 실패", e);
