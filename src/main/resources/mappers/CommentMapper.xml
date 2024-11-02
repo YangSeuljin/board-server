@@ -6,7 +6,7 @@
         (postId,
          contents,
          subCommentId)
-        VALUES (#{postId}, #{contetns}, #{subCommentId})
+        VALUES (#{postId}, #{contents}, #{subCommentId})
     </insert>
     <update id="updateCategory" parameterType="com.sideproject.boardserver.dto.CommentDTO">
         UPDATE comment
