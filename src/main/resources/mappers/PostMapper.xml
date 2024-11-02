@@ -16,9 +16,12 @@
         Where userId = #{userId}
     </select>
     <insert id="register" parameterType="com.sideproject.boardserver.dto.PostDTO">
-        INSERT INTO post(name, isAdmin, contents, createTime, views, categoryId, userId, fileId, updateTime)
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO post (name, isAdmin, contents, createTime, views, categoryId, userId, fileId, updateTime )
         VALUES (#{name}, #{isAdmin}, #{contents}, #{createTime}, #{views}, #{categoryId}, #{userId}, #{fileId},
-                #{updateTime})
+        #{updateTime})
     </insert>
     <update id="updatePosts" parameterType="com.sideproject.boardserver.dto.PostDTO">
         UPDATE post
