@@ -8,13 +8,13 @@
          subCommentId)
         VALUES (#{postId}, #{contents}, #{subCommentId})
     </insert>
-    <update id="updateCategory" parameterType="com.sideproject.boardserver.dto.CommentDTO">
+    <update id="updateComments" parameterType="com.sideproject.boardserver.dto.CommentDTO">
         UPDATE comment
         SET contents = #{contents},
         subCommentId = #{subCommentId}
             WHERE id = #{id}
     </update>
-  <delete id="deleteCategory">
+  <delete id="deletePostComment">
       DELETE
       FROM comment
       where id = #{comment}
